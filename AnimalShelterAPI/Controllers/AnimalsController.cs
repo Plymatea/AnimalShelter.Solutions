@@ -39,7 +39,37 @@ namespace Animals.Controllers
             return animal;
         }
 
-         // POST: api/Animals
+        // PUT: api/Animals/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAnimal(int id, Animal animal)
+        {
+            if (id != animal.AnimalId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(animal).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AnimalExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Animals
         [HttpPost]
         public async Task<ActionResult<Animal>> PostAnimal(Animal animal)
         {
@@ -49,6 +79,25 @@ namespace Animals.Controllers
             return CreatedAtAction(nameof(GetAnimal), new { id = animal.AnimalId }, animal);
         }
 
+        // DELETE: api/Animals/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAnimal(int id)
+        {
+            var animal = await _context.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                return NotFound();
+            }
 
+            _context.Animals.Remove(animal);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool AnimalExists(int id)
+        {
+            return _context.Animals.Any(e => e.AnimalId == id);
+        }
     }
 }
