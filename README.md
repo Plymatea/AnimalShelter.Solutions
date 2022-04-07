@@ -57,7 +57,7 @@ _**In order to access a usable version of the sql database you will need to do t
   "age": 0
 }</pre>
 ### **POST:** `/api/animalshelter/animals`
-* 
+
 <pre>{
   "type": "string",
   "name": "string",
@@ -69,7 +69,7 @@ _**In order to access a usable version of the sql database you will need to do t
 * To retrieve an individual animal
 
 ### **PUT:** ***/api/animalshelter/animals/{id}***
-* 
+
 <pre>{
   "animalId": 0
   "type": "string",
